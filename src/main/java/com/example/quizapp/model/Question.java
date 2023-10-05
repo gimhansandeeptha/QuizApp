@@ -1,13 +1,14 @@
-package com.example.quizapp.database;
+package com.example.quizapp.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 
 @Data // No need to set getters and setters manually. code is shorter.
 @Entity
 public class Question {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", nullable = false, updatable = false)
     private Integer id;
     @Column(name="question_title", nullable = false)
@@ -44,3 +45,4 @@ public class Question {
 
 
 }
+

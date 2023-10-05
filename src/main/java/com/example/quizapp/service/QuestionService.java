@@ -1,36 +1,50 @@
 package com.example.quizapp.service;
 
-import com.example.quizapp.database.Question;
-import com.example.quizapp.database.QuestionRepository;
+import com.example.quizapp.database.QuestionDao;
+import com.example.quizapp.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class QuestionService {
-    private final QuestionRepository questionRepository;
+    private final QuestionDao questionDao;
 
     @Autowired
-    public QuestionService(QuestionRepository questionRepository) {
-        this.questionRepository = questionRepository;
+    public QuestionService(QuestionDao questionDao) {
+        this.questionDao = questionDao;
     }
 
-    public List<Question> getAllQuestions(){
-        return questionRepository.findAll();
+    public ResponseEntity<List<Question>> getAllQuestions(){
+        try {
+            return new ResponseEntity<>(questionDao.findAll(), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(questionDao.findAll(), HttpStatus.BAD_REQUEST);
+
     }
 
-    public List<Question> getQuestionsByCategory(String category) {
-        return questionRepository.findByCategory(category);
+    public ResponseEntity<List<Question>> getQuestionsByCategory(String category) {
+        try {
+            return new ResponseEntity<>(questionDao.findByCategory(category), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
     }
 
-    public String addQuestion(Question question) {
-        questionRepository.save(question);
-        return "Success";
+    public ResponseEntity<String> addQuestion(Question question) {
+        questionDao.save(question);
+        return new ResponseEntity<>("Success", HttpStatus.CREATED);
     }
 
-    public String deleteQuestion(Integer id) {
-        questionRepository.deleteById(id);
-        return "Success";
+    public ResponseEntity<String> deleteQuestion(Integer id) {
+        questionDao.deleteById(id);
+        return new ResponseEntity<>("Deleted",HttpStatus.CREATED);
     }
 }

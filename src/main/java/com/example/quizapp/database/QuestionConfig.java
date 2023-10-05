@@ -1,5 +1,6 @@
 package com.example.quizapp.database;
 
+import com.example.quizapp.model.Question;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +10,7 @@ import java.util.List;
 @Configuration
 public class QuestionConfig {
     @Bean
-    CommandLineRunner commandLineRunner(QuestionRepository questionRepository){
+    CommandLineRunner commandLineRunner(QuestionDao questionDao){
         return args -> {
             Question question1= new Question(
                     "What is the most easy programming language to learn for beginners?",
@@ -32,7 +33,7 @@ public class QuestionConfig {
                     "1991","Hard", "History"
             );
 
-            questionRepository.saveAll(List.of(question1,question2,question3,question4));
+            questionDao.saveAll(List.of(question1,question2,question3,question4));
         };
     }
 }
